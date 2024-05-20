@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Resultado</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='style.css') }}"
+        />
+        <link
+        rel="icon"
+        href="https://yt3.googleusercontent.com/ytc/AIdro_mf_8EkwzsGbmw_w3w9jY_VUUxJFg8WBjn5OyBEbwirKg=s160-c-k-c0x00ffffff-no-rj"
+        />
+    </head>
+    <body>
+        <div id="result" style="display: {{ 'block' if tokens else 'none' }}">
+        <h1>Tokens identificados para {{ lenguaje }}</h1>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Token</th>
+                <th>Valor</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% if tokens %} {% for token in tokens[:-1] %}
+            <tr
+                class="{% if 'token' in token and token.token in errors|map(attribute='token') %}error{% endif %}"
+            >
+                <td>{{ token[0] }}</td>
+                <td>{{ token[1] }}</td>
+            </tr>
+            {% endfor %} {% endif %}
+            </tbody>
+        </table>
+        {% if errors %}
+        <div align="center">
+            <h1>Errores</h1>
+            <ul>
+            {% for error in errors %}
+            <li>
+                Error en la línea {{ error.line }}: Token '{{ error.token }}' no reconocido.
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        </div>
+    </body>
+</html>
